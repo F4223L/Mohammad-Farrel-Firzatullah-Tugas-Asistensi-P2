@@ -1,0 +1,104 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>  // untuk fungsi sleep()
+
+// Fungsi untuk membersihkan layar (agar gambar terlihat seperti bergerak)
+void clear_screen() {
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}
+
+// Fungsi untuk menampilkan gambar persegi panjang
+void gambar_persegi_panjang(int panjang, int lebar) {
+    for (int i = 0; i < lebar; i++) {
+        for (int j = 0; j < panjang; j++) {
+            printf("*");
+        }
+        printf("\n");
+    }
+}
+
+// Fungsi untuk menampilkan gambar segitiga
+void gambar_segitiga(int tinggi) {
+    for (int i = 1; i <= tinggi; i++) {
+        for (int j = 0; j < i; j++) {
+            printf("*");
+        }
+        printf("\n");
+    }
+}
+
+// Fungsi untuk gambar bergerak (menggeser ke bawah)
+void gambar_bergerak(int panjang, int lebar, int steps) {
+    for (int step = 0; step < steps; step++) {
+        clear_screen();
+        // Menambahkan baris kosong untuk membuat efek "bergerak"
+        for (int i = 0; i < step; i++) {
+            printf("\n");
+        }
+        gambar_persegi_panjang(panjang, lebar);
+        sleep(1);  // jeda 1 detik untuk animasi gerakan
+    }
+}
+
+int main() {
+    int pilihan, panjang, lebar, tinggi, steps;
+    
+    while (1) {  // loop untuk menjalankan program terus-menerus
+        printf("Pilih gambar yang ingin dibuat:\n");
+        printf("1. Persegi Panjang\n");
+        printf("2. Segitiga\n");
+        printf("3. Gambar Bergerak (Persegi Panjang)\n");
+        printf("0. Keluar\n");
+        printf("Pilihan: ");
+        scanf("%d", &pilihan);
+        
+        if (pilihan == 0) {
+            printf("Keluar dari program.\n");
+            break;
+        }
+        
+        switch (pilihan) {
+            case 1:
+                printf("Masukkan panjang (10 - 100): ");
+                scanf("%d", &panjang);
+                printf("Masukkan lebar (5 - 75): ");
+                scanf("%d", &lebar);
+                if (panjang >= 10 && panjang <= 100 && lebar >= 5 && lebar <= 75) {
+                    gambar_persegi_panjang(panjang, lebar);
+                } else {
+                    printf("Panjang atau lebar tidak sesuai batasan!\n");
+                }
+                break;
+            case 2:
+                printf("Masukkan tinggi segitiga (5 - 75): ");
+                scanf("%d", &tinggi);
+                if (tinggi >= 5 && tinggi <= 75) {
+                    gambar_segitiga(tinggi);
+                } else {
+                    printf("Tinggi tidak sesuai batasan!\n");
+                }
+                break;
+            case 3:
+                printf("Masukkan panjang (10 - 100): ");
+                scanf("%d", &panjang);
+                printf("Masukkan lebar (5 - 75): ");
+                scanf("%d", &lebar);
+                printf("Masukkan jumlah langkah gerakan: ");
+                scanf("%d", &steps);
+                if (panjang >= 10 && panjang <= 100 && lebar >= 5 && lebar <= 75) {
+                    gambar_bergerak(panjang, lebar, steps);
+                } else {
+                    printf("Panjang atau lebar tidak sesuai batasan!\n");
+                }
+                break;
+            default:
+                printf("Pilihan tidak valid!\n");
+                break;
+        }
+    }
+    
+    return 0;
